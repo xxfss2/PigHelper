@@ -28,20 +28,46 @@ namespace PigHelper
 
         private void button1_Click(object sender, EventArgs e)
         {
-            PigHelper pig = new PigHelper();
-            pig.UpdateOrderList();
+            PigHelper pig = new PigHelper(this);
+            pig.StartGetThread ();
 
-            listView1.Items.Clear();
-            foreach (var project in Pig.ProjectService .GetUnLookedProjects () )
+            DataAmount = 0;
+            //foreach (var project in Pig.ProjectService .GetUnLookedProjects () )
+            //{
+
+            //    string[] item = new string[3];
+            //    item[0] = project.Title;
+            //    item[1] = project.Money;
+            //    item[2] = project.Description;
+            //    ListViewItem vItem = new ListViewItem(item);
+            //    vItem.Tag = project;
+            //    listView1.Items.Add(vItem);
+            //}
+        }
+
+        private int DataAmount = 0;
+        public void UpdateDataList(List<ProjectInfo> pros)
+        {
+            if (listView1.InvokeRequired)
             {
+                Action<List<ProjectInfo>> act = (x) =>
+                {
+                    foreach (var project in x)
+                    {
 
-                string[] item = new string[3];
-                item[0] = project.Title;
-                item[1] = project.Money;
-                item[2] = project.Description;
-                ListViewItem vItem = new ListViewItem(item);
-                vItem.Tag = project;
-                listView1.Items.Add(vItem);
+                        string[] item = new string[5];
+                        item[0] = DataAmount.ToString () ;
+                        item[1] = project.IsNew ? "新！" : "";
+                        item[2] = project.Title;
+                        item[3] = project.Money;
+                        item[4] = project.Description;
+                        ListViewItem vItem = new ListViewItem(item);
+                        vItem.Tag = project;
+                        listView1.Items.Add(vItem);
+                        DataAmount++;
+                    }
+                };
+                listView1.Invoke(act, pros);
             }
         }
 
@@ -105,6 +131,11 @@ namespace PigHelper
         {
             UnregisterHotKey(this.Handle, 123);
             UnregisterHotKey(this.Handle, 456);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -7,6 +7,7 @@ using System.IO;
 using HtmlAgilityPack;
 using System.IO.Compression;
 using PigHelper.Pig;
+using System.Threading;
 namespace PigHelper
 {
     /// <summary>
@@ -14,9 +15,39 @@ namespace PigHelper
     /// </summary>
     public class PigHelper
     {
-        public void UpdateOrderList()
+        /// <summary>
+        /// 设置获取几个分页的数据
+        /// </summary>
+        public int PageCount { get; set; }
+
+        private FrmMian _frm;
+
+        private Thread _GetDataThread;
+
+        public PigHelper(FrmMian frm)
         {
-            HttpWebRequest request = WebRequest.Create(@"http://task.zhubajie.com/t-rjkf/o7.html") as HttpWebRequest;
+            PageCount = 10;
+            _frm = frm;
+        }
+
+        public void StartGetThread()
+        {
+            _GetDataThread = new Thread(new ThreadStart(UpdatePages));
+            _GetDataThread.Start();
+        }
+
+        private void UpdatePages()
+        {
+             
+            for (int i =1; i <= PageCount ; i++)
+            {
+                UpdateOnePage(i);
+            }
+        }
+
+        private void UpdateOnePage(int index)
+        {
+            HttpWebRequest request = WebRequest.Create(@"http://task.zhubajie.com/t-rjkf/o7p"+index+".html") as HttpWebRequest;
             request.CookieContainer = new CookieContainer();
             request.Method = "GET";
             request.Accept = @"text/html, application/xhtml+xml, */*";
@@ -33,8 +64,9 @@ namespace PigHelper
                     doc.Load(sr);
                     HtmlNode mainTable = doc.DocumentNode.SelectNodes("//table[@class=\"list-task\"]")[0];
                     HtmlNodeCollection trs = mainTable.SelectNodes("//tr");
-
-                    for (int i = 0; i < 42; i++)
+                    int count = trs.Count > 40 ? 42 : trs.Count;
+                    List <ProjectInfo > pros=new List<ProjectInfo> ();
+                    for (int i = 0; i < count; i++)
                     {
                         if (trs[i].ChildNodes[3].InnerText == "已选标")
                             continue;
@@ -50,6 +82,12 @@ namespace PigHelper
                         else if (td.ChildNodes[0].ChildNodes.Count == 5)
                         {
                             projectInfo.Title ="被屏蔽了";
+                            projectInfo.URL = td.ChildNodes[0].ChildNodes[1].Attributes["href"].Value;
+                            projectInfo.Money = td.ChildNodes[0].ChildNodes[0].InnerText;
+                        }
+                        else if (td.ChildNodes[0].ChildNodes.Count == 4)
+                        {
+                            projectInfo.Title = td.ChildNodes[0].ChildNodes[1].InnerText;
                             projectInfo.URL = td.ChildNodes[0].ChildNodes[1].Attributes["href"].Value;
                             projectInfo.Money = td.ChildNodes[0].ChildNodes[0].InnerText;
                         }
@@ -70,14 +108,17 @@ namespace PigHelper
                         projectInfo.Looked = false;
                         projectInfo.GetTime = DateTime.Now;
 
-                        ProjectService.Add(projectInfo);
-                    }
+                        pros.Add(projectInfo);
 
+                    }
+                    ProjectService.AddRange(pros);
+                    _frm.UpdateDataList(pros);
                 }
                 
 
             }
             response.Close();
+            respStream.Close();
         }
     }
 }

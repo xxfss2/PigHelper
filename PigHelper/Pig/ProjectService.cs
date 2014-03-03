@@ -15,6 +15,24 @@ namespace PigHelper.Pig
                 return;
             else
                 Projects.Add(pro);
+
+        }
+
+        public static void AddRange(List<ProjectInfo> pros)
+        {
+            for (int i = pros .Count -1; i >=0; i--)
+            {
+                var pro=Projects.Where(s => s.URL == pros[i].URL).FirstOrDefault();
+                if (pro == null )
+                {
+                    Projects.Add(pros[i]);
+                    continue;
+                }
+                else 
+                {
+                    pros.Remove(pros[i]);
+                }
+            }
         }
 
         public static List<ProjectInfo> GetUnLookedProjects()
