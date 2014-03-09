@@ -31,7 +31,8 @@ namespace PigHelper
             PigHelper pig = new PigHelper(this);
             pig.StartGetThread ();
 
-            DataAmount = 0;
+            DataAmount1 = 0;
+            DataAmount2 = 0;
             //foreach (var project in Pig.ProjectService .GetUnLookedProjects () )
             //{
 
@@ -45,29 +46,52 @@ namespace PigHelper
             //}
         }
 
-        private int DataAmount = 0;
+        private int DataAmount1 = 0;
+        private int DataAmount2 = 0;
         public void UpdateDataList(List<ProjectInfo> pros)
         {
-            if (listView1.InvokeRequired)
+            foreach (var project in pros)
             {
-                Action<List<ProjectInfo>> act = (x) =>
+                if (project.Title.Contains("破解") || project.Title.Contains("验证码") || project.Title.Contains("识别") || project.Title.Contains("外挂") || project.Title.Contains("淘宝") || project.Title.Contains("辅助"))
                 {
-                    foreach (var project in x)
+                    if (listView2.InvokeRequired)
                     {
+                        Action<ProjectInfo> act = (x) =>
+                        {
+                            string[] item = new string[5];
+                            item[0] = DataAmount2.ToString();
+                            item[1] = x.Title;
+                            item[2] = x.Money;
+                            item[3] = x.Description;
+                            ListViewItem vItem = new ListViewItem(item);
+                            vItem.Tag = x;
+                            listView2.Items.Add(vItem);
+                            DataAmount2++;
 
-                        string[] item = new string[5];
-                        item[0] = DataAmount.ToString () ;
-                        item[1] = project.IsNew ? "新！" : "";
-                        item[2] = project.Title;
-                        item[3] = project.Money;
-                        item[4] = project.Description;
-                        ListViewItem vItem = new ListViewItem(item);
-                        vItem.Tag = project;
-                        listView1.Items.Add(vItem);
-                        DataAmount++;
+                        };
+                        listView2.Invoke(act, project);
                     }
-                };
-                listView1.Invoke(act, pros);
+                }
+                else
+                {
+                    if (listView1.InvokeRequired)
+                    {
+                        Action<ProjectInfo> act = (x) =>
+                        {
+                            string[] item = new string[5];
+                            item[0] = DataAmount1.ToString();
+                            item[1] = x.Title;
+                            item[2] = x.Money;
+                            item[3] = x.Description;
+                            ListViewItem vItem = new ListViewItem(item);
+                            vItem.Tag = x;
+                            listView1.Items.Add(vItem);
+                            DataAmount1++;
+
+                        };
+                        listView1.Invoke(act, project);
+                    }
+                }
             }
         }
 
@@ -75,7 +99,8 @@ namespace PigHelper
         {
             ImageList imgList = new ImageList();
             imgList.ImageSize = new Size(1, 20);//分别是宽和高
-            listView1.SmallImageList = imgList;   //这里设置listView的SmallImageList ,用imgList将其撑大。
+            listView1.SmallImageList = imgList;   
+            listView2.SmallImageList = imgList;  
             RegisterHotKey(this.Handle, 123, 2, Keys.Q);
             RegisterHotKey(this.Handle, 456, 2, Keys.W);
 

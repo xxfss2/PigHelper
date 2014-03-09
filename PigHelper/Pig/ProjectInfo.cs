@@ -12,7 +12,7 @@ namespace PigHelper.Pig
         public string URL { get; set; }
         public string Description { get; set; }
         public bool Looked { get; set; }
-        public bool IsNew { get; set; }
+   //     public bool IsNew { get; set; }
         public DateTime GetTime { get; set; }
 
     }
