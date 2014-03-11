@@ -43,6 +43,7 @@ namespace PigHelper
             {
                 UpdateOnePage(i);
             }
+            _frm.UpdateEnd();
         }
 
         private void UpdateOnePage(int index)

@@ -28,11 +28,13 @@ namespace PigHelper
 
         private void button1_Click(object sender, EventArgs e)
         {
+            this.button1.Enabled = false;
             PigHelper pig = new PigHelper(this);
             pig.StartGetThread ();
 
             DataAmount1 = 0;
             DataAmount2 = 0;
+            DataAmount3 = 0;
             //foreach (var project in Pig.ProjectService .GetUnLookedProjects () )
             //{
 
@@ -46,13 +48,50 @@ namespace PigHelper
             //}
         }
 
+        public void UpdateEnd()
+        {
+            lbLog.Items.Add(DateTime.Now.ToShortTimeString() + "   推荐:" + DataAmount3+"   正常："+DataAmount1 + "   过滤:"+DataAmount2 );
+            this.button1.Enabled = true;
+        }
+
         private int DataAmount1 = 0;
         private int DataAmount2 = 0;
+        private int DataAmount3 = 0;
+        private bool IsFirstBind = true;
         public void UpdateDataList(List<ProjectInfo> pros)
         {
             foreach (var project in pros)
             {
-                if (project.Title.Contains("破解") || project.Title.Contains("验证码") || project.Title.Contains("识别") || project.Title.Contains("外挂") || project.Title.Contains("淘宝") || project.Title.Contains("辅助"))
+                if (IsFirstBind)
+                {
+                    Mark mark = new Mark();
+                    List <string > urls=mark .LoadLocal ();
+                    if (urls.Where(s => s == project.URL).FirstOrDefault() != null)
+                    {
+                        continue;
+                    }
+                }
+                if (project.Title.Contains("系统") || project.Title.Contains("管理"))
+                {
+                    if (listView3.InvokeRequired)
+                    {
+                        Action<ProjectInfo> act = (x) =>
+                        {
+                            string[] item = new string[5];
+                            item[0] = DataAmount3.ToString();
+                            item[1] = x.Title;
+                            item[2] = x.Money;
+                            item[3] = x.Description;
+                            ListViewItem vItem = new ListViewItem(item);
+                            vItem.Tag = x;
+                            listView3.Items.Add(vItem);
+                            DataAmount3++;
+
+                        };
+                        listView2.Invoke(act, project);
+                    }
+                }
+                else if (project.Title.Contains("破解") || project.Title.Contains("验证码") || project.Title.Contains("识别") || project.Title.Contains("外挂") || project.Title.Contains("淘宝") || project.Title.Contains("辅助"))
                 {
                     if (listView2.InvokeRequired)
                     {
@@ -100,24 +139,23 @@ namespace PigHelper
             ImageList imgList = new ImageList();
             imgList.ImageSize = new Size(1, 20);//分别是宽和高
             listView1.SmallImageList = imgList;   
-            listView2.SmallImageList = imgList;  
+            listView2.SmallImageList = imgList;
+            listView3.SmallImageList = imgList;  
             RegisterHotKey(this.Handle, 123, 2, Keys.Q);
             RegisterHotKey(this.Handle, 456, 2, Keys.W);
-
+            Control.CheckForIllegalCrossThreadCalls = false;
         }
 
-        private void listView1_DoubleClick(object sender, EventArgs e)
+        ListView ContextMenuList = null;
+        private void listView_MouseClick(object sender, MouseEventArgs e)
         {
-          var pro =(ProjectInfo)listView1.SelectedItems[0].Tag;
-          System.Diagnostics.Process.Start(pro.URL ); 
-        }
-
-        private void listView1_MouseClick(object sender, MouseEventArgs e)
-        {
+            ListView lv = (ListView)sender;
             if (e.Button == MouseButtons.Right)
             {
-                if (this.listView1.SelectedItems.Count == 1)
+
+                if (lv.SelectedItems.Count == 1)
                 {
+                    ContextMenuList = lv;
                     this.contextMenuStrip1.Show(this, new Point(e.Location.X + 15, e.Location.Y + 20));
                 }
                 else
@@ -125,13 +163,18 @@ namespace PigHelper
                     this.contextMenuStrip1.Hide();
                 }
             }
+            if (e.Button == MouseButtons.Left && lv.SelectedItems.Count>0) 
+            {
+                this.toolTip1.Hide(lv);
+                this.toolTip1.Show(lv.SelectedItems [0].SubItems [3].Text, lv, new Point(e.X, e.Y+18));
+            }
         }
 
         private void 标记ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var pro = (ProjectInfo)listView1.SelectedItems[0].Tag;
+            var pro = (ProjectInfo)ContextMenuList.SelectedItems[0].Tag;
             pro.Looked = true;
-            listView1.Items.Remove(listView1.SelectedItems[0]);
+            ContextMenuList.Items.Remove(ContextMenuList.SelectedItems[0]);
         }
 
         protected override void WndProc(ref Message m)
@@ -162,5 +205,24 @@ namespace PigHelper
         {
 
         }
+
+
+        private void listView_DoubleClick(object sender, EventArgs e)
+        {
+            ListView lv = (ListView)sender;
+            var pro = (ProjectInfo)lv.SelectedItems[0].Tag;
+            System.Diagnostics.Process.Start(pro.URL); 
+        }
+        /// <summary>
+        /// 关闭的时候将标记的 项目 保存至本地文件，用于下次打开程序载入
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnClosed(EventArgs e)
+        {
+            Mark mark = new Mark();
+            mark.SaveLocal(ProjectService.Projects);
+            base.OnClosed(e);
+        }
+
     }
 }

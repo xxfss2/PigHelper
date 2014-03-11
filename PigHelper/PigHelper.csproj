@@ -55,6 +55,7 @@
     <Compile Include="FrmMian.Designer.cs">
       <DependentUpon>FrmMian.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mark.cs" />
     <Compile Include="Pig\PigHelper.cs" />
     <Compile Include="Pig\ProjectInfo.cs" />
     <Compile Include="Pig\ProjectService.cs" />
