@@ -50,8 +50,13 @@ namespace PigHelper
 
         public void UpdateEnd()
         {
-            lbLog.Items.Add(DateTime.Now.ToShortTimeString() + "   推荐:" + DataAmount3+"   正常："+DataAmount1 + "   过滤:"+DataAmount2 );
-            this.button1.Enabled = true;
+            if (DataAmount3 > 0 || DataAmount1 > 0)
+            {
+                lbLog.Items.Add(DateTime.Now.ToShortTimeString() + "   推荐:" + DataAmount3 + "   正常：" + DataAmount1 + "   过滤:" + DataAmount2);
+            } //  this.button1.Enabled = true;
+            DataAmount1 = 0;
+            DataAmount2 = 0;
+            DataAmount3 = 0;
         }
 
         private int DataAmount1 = 0;
@@ -140,7 +145,8 @@ namespace PigHelper
             imgList.ImageSize = new Size(1, 20);//分别是宽和高
             listView1.SmallImageList = imgList;   
             listView2.SmallImageList = imgList;
-            listView3.SmallImageList = imgList;  
+            listView3.SmallImageList = imgList;
+            lvBid.SmallImageList = imgList;
             RegisterHotKey(this.Handle, 123, 2, Keys.Q);
             RegisterHotKey(this.Handle, 456, 2, Keys.W);
             Control.CheckForIllegalCrossThreadCalls = false;
@@ -222,6 +228,19 @@ namespace PigHelper
             Mark mark = new Mark();
             mark.SaveLocal(ProjectService.Projects);
             base.OnClosed(e);
+        }
+
+        private void 已投ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var pro = (ProjectInfo)ContextMenuList.SelectedItems[0].Tag;
+            ContextMenuList.Items.Remove(ContextMenuList.SelectedItems[0]);
+            string[] item = new string[3];
+            item[0] = pro.Title;
+            item[1] = pro.Money;
+            item[2] = pro.Description;
+            ListViewItem vItem = new ListViewItem(item);
+            vItem.Tag = pro;
+            lvBid.Items.Add(vItem);
         }
 
     }

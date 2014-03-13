@@ -33,17 +33,21 @@ namespace PigHelper
         public void StartGetThread()
         {
             _GetDataThread = new Thread(new ThreadStart(UpdatePages));
+            _GetDataThread.IsBackground = true;
             _GetDataThread.Start();
         }
 
         private void UpdatePages()
         {
-             
-            for (int i =1; i <= PageCount ; i++)
+            while (true)
             {
-                UpdateOnePage(i);
+                for (int i = 1; i <= PageCount; i++)
+                {
+                    UpdateOnePage(i);
+                }
+                _frm.UpdateEnd();
+                Thread.Sleep(30000);
             }
-            _frm.UpdateEnd();
         }
 
         private void UpdateOnePage(int index)
@@ -73,6 +77,8 @@ namespace PigHelper
                             continue;
                         var td = trs[i].ChildNodes[0];
                         ProjectInfo projectInfo = new ProjectInfo();
+                        if (td.ChildNodes.Count < 1)
+                            continue;
                         if (td.ChildNodes[0].ChildNodes.Count == 2 || td.ChildNodes[0].ChildNodes.Count == 3)
                         {
                             projectInfo.Title = td.ChildNodes[0].ChildNodes[1].InnerText;

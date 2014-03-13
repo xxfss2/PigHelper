@@ -53,16 +53,24 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.lbLog = new System.Windows.Forms.ListBox();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.lvBid = new System.Windows.Forms.ListView();
+            this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader15 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader16 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.已投ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.contextMenuStrip1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(766, 448);
+            this.button1.Location = new System.Drawing.Point(735, 452);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -73,15 +81,17 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.标记ToolStripMenuItem});
+            this.标记ToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.已投ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(101, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(113, 54);
             // 
             // 标记ToolStripMenuItem
             // 
             this.标记ToolStripMenuItem.Name = "标记ToolStripMenuItem";
-            this.标记ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.标记ToolStripMenuItem.Text = "标记";
+            this.标记ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.标记ToolStripMenuItem.Text = "看过了";
             this.标记ToolStripMenuItem.Click += new System.EventHandler(this.标记ToolStripMenuItem_Click);
             // 
             // tabPage3
@@ -245,6 +255,7 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -261,14 +272,71 @@
             this.lbLog.Size = new System.Drawing.Size(625, 88);
             this.lbLog.TabIndex = 5;
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.lvBid);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(897, 395);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "投标记录";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // lvBid
+            // 
+            this.lvBid.BackColor = System.Drawing.Color.AliceBlue;
+            this.lvBid.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader14,
+            this.columnHeader15,
+            this.columnHeader16});
+            this.lvBid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvBid.FullRowSelect = true;
+            this.lvBid.GridLines = true;
+            this.lvBid.Location = new System.Drawing.Point(3, 3);
+            this.lvBid.MultiSelect = false;
+            this.lvBid.Name = "lvBid";
+            this.lvBid.Size = new System.Drawing.Size(891, 389);
+            this.lvBid.TabIndex = 3;
+            this.lvBid.UseCompatibleStateImageBehavior = false;
+            this.lvBid.View = System.Windows.Forms.View.Details;
+            this.lvBid.DoubleClick += new System.EventHandler(this.listView_DoubleClick);
+            // 
+            // columnHeader14
+            // 
+            this.columnHeader14.Text = "标题";
+            this.columnHeader14.Width = 240;
+            // 
+            // columnHeader15
+            // 
+            this.columnHeader15.Text = "金额";
+            this.columnHeader15.Width = 50;
+            // 
+            // columnHeader16
+            // 
+            this.columnHeader16.Text = "简介";
+            this.columnHeader16.Width = 500;
+            // 
+            // 已投ToolStripMenuItem
+            // 
+            this.已投ToolStripMenuItem.Name = "已投ToolStripMenuItem";
+            this.已投ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.已投ToolStripMenuItem.Text = "投过了";
+            this.已投ToolStripMenuItem.Click += new System.EventHandler(this.已投ToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            // 
             // FrmMian
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(905, 519);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.lbLog);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.button1);
             this.Name = "FrmMian";
             this.Text = "Form1";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmMian_FormClosed);
@@ -278,6 +346,7 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -308,6 +377,13 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ListBox lbLog;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.ListView lvBid;
+        private System.Windows.Forms.ColumnHeader columnHeader14;
+        private System.Windows.Forms.ColumnHeader columnHeader15;
+        private System.Windows.Forms.ColumnHeader columnHeader16;
+        private System.Windows.Forms.ToolStripMenuItem 已投ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 
