@@ -28,13 +28,7 @@ namespace PigHelper
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.button1.Enabled = false;
-            PigHelper pig = new PigHelper(this);
-            pig.StartGetThread ();
 
-            DataAmount1 = 0;
-            DataAmount2 = 0;
-            DataAmount3 = 0;
             //foreach (var project in Pig.ProjectService .GetUnLookedProjects () )
             //{
 
@@ -150,6 +144,13 @@ namespace PigHelper
             RegisterHotKey(this.Handle, 123, 2, Keys.Q);
             RegisterHotKey(this.Handle, 456, 2, Keys.W);
             Control.CheckForIllegalCrossThreadCalls = false;
+
+            PigHelper pig = new PigHelper(this);
+            pig.StartGetThread();
+
+            DataAmount1 = 0;
+            DataAmount2 = 0;
+            DataAmount3 = 0;
         }
 
         ListView ContextMenuList = null;

@@ -29,9 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.button1 = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.标记ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.已投ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.listView3 = new System.Windows.Forms.ListView();
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -51,15 +52,14 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.lbLog = new System.Windows.Forms.ListBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.lvBid = new System.Windows.Forms.ListView();
             this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader15 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader16 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.已投ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.lbLog = new System.Windows.Forms.ListBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -67,16 +67,6 @@
             this.tabControl1.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(735, 452);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // contextMenuStrip1
             // 
@@ -90,9 +80,21 @@
             // 标记ToolStripMenuItem
             // 
             this.标记ToolStripMenuItem.Name = "标记ToolStripMenuItem";
-            this.标记ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.标记ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.标记ToolStripMenuItem.Text = "看过了";
             this.标记ToolStripMenuItem.Click += new System.EventHandler(this.标记ToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(109, 6);
+            // 
+            // 已投ToolStripMenuItem
+            // 
+            this.已投ToolStripMenuItem.Name = "已投ToolStripMenuItem";
+            this.已投ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.已投ToolStripMenuItem.Text = "投过了";
+            this.已投ToolStripMenuItem.Click += new System.EventHandler(this.已投ToolStripMenuItem_Click);
             // 
             // tabPage3
             // 
@@ -263,15 +265,6 @@
             this.tabControl1.Size = new System.Drawing.Size(905, 421);
             this.tabControl1.TabIndex = 4;
             // 
-            // lbLog
-            // 
-            this.lbLog.FormattingEnabled = true;
-            this.lbLog.ItemHeight = 12;
-            this.lbLog.Location = new System.Drawing.Point(4, 427);
-            this.lbLog.Name = "lbLog";
-            this.lbLog.Size = new System.Drawing.Size(625, 88);
-            this.lbLog.TabIndex = 5;
-            // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.lvBid);
@@ -317,24 +310,30 @@
             this.columnHeader16.Text = "简介";
             this.columnHeader16.Width = 500;
             // 
-            // 已投ToolStripMenuItem
+            // lbLog
             // 
-            this.已投ToolStripMenuItem.Name = "已投ToolStripMenuItem";
-            this.已投ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.已投ToolStripMenuItem.Text = "投过了";
-            this.已投ToolStripMenuItem.Click += new System.EventHandler(this.已投ToolStripMenuItem_Click);
+            this.lbLog.FormattingEnabled = true;
+            this.lbLog.ItemHeight = 12;
+            this.lbLog.Location = new System.Drawing.Point(4, 427);
+            this.lbLog.Name = "lbLog";
+            this.lbLog.Size = new System.Drawing.Size(497, 88);
+            this.lbLog.TabIndex = 5;
             // 
-            // toolStripSeparator1
+            // textBox1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.textBox1.Location = new System.Drawing.Point(507, 427);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(391, 88);
+            this.textBox1.TabIndex = 6;
+            this.textBox1.Text = "熟悉数据管理系统，企业信息管理系统开发，有历史案例可以参考\r\n有意向请联系 企鹅 164 981 897 详谈";
             // 
             // FrmMian
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(905, 519);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.lbLog);
             this.Controls.Add(this.tabControl1);
             this.Name = "FrmMian";
@@ -348,12 +347,12 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 标记ToolStripMenuItem;
         private System.Windows.Forms.TabPage tabPage3;
@@ -384,6 +383,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader16;
         private System.Windows.Forms.ToolStripMenuItem 已投ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 
