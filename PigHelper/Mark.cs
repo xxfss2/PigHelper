@@ -28,14 +28,18 @@ namespace PigHelper
 
         public List <string > LoadLocal()
         {
+            
             List<string> markedUrl = new List<string>();
-            StreamReader reader = new StreamReader("mark.txt");
-            string line;
-            while (!string .IsNullOrEmpty (line= reader .ReadLine()) )
+            if (File.Exists("mark.txt"))
             {
-                markedUrl.Add(line); 
+                StreamReader reader = new StreamReader("mark.txt");
+                string line;
+                while (!string.IsNullOrEmpty(line = reader.ReadLine()))
+                {
+                    markedUrl.Add(line);
+                }
+                reader.Close();
             }
-            reader.Close();
             return markedUrl;
         }
     }
