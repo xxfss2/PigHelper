@@ -326,7 +326,8 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(391, 88);
             this.textBox1.TabIndex = 6;
-            this.textBox1.Text = "熟悉数据管理系统，企业信息管理系统开发，有历史案例可以参考\r\n有意向请联系 企鹅 164 981 897 详谈";
+            this.textBox1.Text = "熟悉数据管理系统，企业信息管理系统开发，有历史案例可以参考\r\n有意向请联系 企鹅 164 981 897 详谈\r\n工作室主页 ： http://www.xxfst" +
+                "udio.com/";
             // 
             // FrmMian
             // 
