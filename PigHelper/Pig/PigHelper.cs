@@ -52,80 +52,105 @@ namespace PigHelper
 
         private void UpdateOnePage(int index)
         {
-            HttpWebRequest request = WebRequest.Create(@"http://task.zhubajie.com/t-rjkf/o7p"+index+".html") as HttpWebRequest;
+            HttpWebRequest request = WebRequest.Create(@"http://task.zhubajie.com/t-rjkf/o7p" + index + ".html") as HttpWebRequest;
             request.CookieContainer = new CookieContainer();
             request.Method = "GET";
             request.Accept = @"text/html, application/xhtml+xml, */*";
             request.Headers.Add("Accept-Encoding", "gzip, deflate");
             request.Headers.Add("Accept-Language", "zh-CN");
-            HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-            Stream respStream = response.GetResponseStream();
-
-            using (GZipStream reader = new GZipStream(respStream,CompressionMode.Decompress ))
+            Stream respStream = null;
+            HttpWebResponse response = null;
+            try
             {
-                using (StreamReader sr = new StreamReader(reader, Encoding.UTF8))
+                response = request.GetResponse() as HttpWebResponse;
+                respStream = response.GetResponseStream();
+
+                using (GZipStream reader = new GZipStream(respStream, CompressionMode.Decompress))
                 {
-                    HtmlDocument doc = new HtmlDocument();
-                    doc.Load(sr);
-                    HtmlNode mainTable = doc.DocumentNode.SelectNodes("//table[@class=\"list-task\"]")[0];
-                    HtmlNodeCollection trs = mainTable.SelectNodes("//tr");
-                    int count = trs.Count > 40 ? 42 : trs.Count;
-                    List <ProjectInfo > pros=new List<ProjectInfo> ();
-                    for (int i = 0; i < count; i++)
+                    using (StreamReader sr = new StreamReader(reader, Encoding.UTF8))
                     {
-                        if (trs[i].ChildNodes[3].InnerText == "已选标")
-                            continue;
-                        var td = trs[i].ChildNodes[0];
-                        ProjectInfo projectInfo = new ProjectInfo();
-                        if (td.ChildNodes.Count < 1)
-                            continue;
-                        if (td.ChildNodes[0].ChildNodes.Count == 2 || td.ChildNodes[0].ChildNodes.Count == 3)
+                        HtmlDocument doc = new HtmlDocument();
+                        doc.Load(sr);
+                        HtmlNode mainTable = doc.DocumentNode.SelectNodes("//table[@class=\"list-task\"]")[0];
+                        HtmlNodeCollection trs = mainTable.SelectNodes("//tr");
+                        int count = trs.Count > 40 ? 42 : trs.Count;
+                        List<ProjectInfo> pros = new List<ProjectInfo>();
+                        for (int i = 0; i < count; i++)
                         {
-                            projectInfo.Title = td.ChildNodes[0].ChildNodes[1].InnerText;
-                            projectInfo.Money = td.ChildNodes[0].ChildNodes[0].InnerText;
-      
-                            projectInfo.URL = td.ChildNodes[0].ChildNodes[1].Attributes["href"].Value;
-                        }
-                        else if (td.ChildNodes[0].ChildNodes.Count == 5)
-                        {
-                            projectInfo.Title ="被屏蔽了";
-                            projectInfo.URL = td.ChildNodes[0].ChildNodes[1].Attributes["href"].Value;
-                            projectInfo.Money = td.ChildNodes[0].ChildNodes[0].InnerText;
-                        }
-                        else if (td.ChildNodes[0].ChildNodes.Count == 4)
-                        {
-                            projectInfo.Title = td.ChildNodes[0].ChildNodes[1].InnerText;
-                            projectInfo.URL = td.ChildNodes[0].ChildNodes[1].Attributes["href"].Value;
-                            projectInfo.Money = td.ChildNodes[0].ChildNodes[0].InnerText;
-                        }
-                        else
-                        {
-                            projectInfo.Money = "";
-                            projectInfo.Title = td.ChildNodes[0].ChildNodes[0].InnerText;
-                            projectInfo.URL = td.ChildNodes[0].ChildNodes[0].Attributes["href"].Value;
-                        }
+                            if (trs[i].ChildNodes[3].InnerText == "已选标")
+                                continue;
+                            var td = trs[i].ChildNodes[0];
+                            ProjectInfo projectInfo = new ProjectInfo();
+                            if (td.ChildNodes.Count < 1)
+                                continue;
+                            if (td.ChildNodes[0].ChildNodes.Count == 2 || td.ChildNodes[0].ChildNodes.Count == 3)
+                            {
+                                projectInfo.Title = td.ChildNodes[0].ChildNodes[1].InnerText;
+                                projectInfo.Money = td.ChildNodes[0].ChildNodes[0].InnerText;
 
-                        if (projectInfo.Money.Length > 11)
-                        {
-                            projectInfo.Money = projectInfo.Money.Substring(11);
+                                projectInfo.URL = td.ChildNodes[0].ChildNodes[1].Attributes["href"].Value;
+                            }
+                            else if (td.ChildNodes[0].ChildNodes.Count == 5)
+                            {
+                                projectInfo.Title = "被屏蔽了";
+                                projectInfo.URL = td.ChildNodes[0].ChildNodes[1].Attributes["href"].Value;
+                                projectInfo.Money = td.ChildNodes[0].ChildNodes[0].InnerText;
+                            }
+                            else if (td.ChildNodes[0].ChildNodes.Count == 4)
+                            {
+                                projectInfo.Title = td.ChildNodes[0].ChildNodes[1].InnerText;
+                                projectInfo.URL = td.ChildNodes[0].ChildNodes[1].Attributes["href"].Value;
+                                projectInfo.Money = td.ChildNodes[0].ChildNodes[0].InnerText;
+                            }
+                            else
+                            {
+                                projectInfo.Money = "";
+                                projectInfo.Title = td.ChildNodes[0].ChildNodes[0].InnerText;
+                                projectInfo.URL = td.ChildNodes[0].ChildNodes[0].Attributes["href"].Value;
+                            }
+
+                            if (projectInfo.Money.Length > 11)
+                            {
+                                projectInfo.Money = projectInfo.Money.Substring(11);
+                            }
+                            projectInfo.Description = td.ChildNodes[1].InnerText;
+
+
+                            projectInfo.Looked = false;
+                            projectInfo.GetTime = DateTime.Now;
+
+                            pros.Add(projectInfo);
+
                         }
-                        projectInfo.Description = td.ChildNodes[1].InnerText;
-
-
-                        projectInfo.Looked = false;
-                        projectInfo.GetTime = DateTime.Now;
-
-                        pros.Add(projectInfo);
-
+                        ProjectService.AddRange(pros);
+                        _frm.UpdateDataList(pros);
                     }
-                    ProjectService.AddRange(pros);
-                    _frm.UpdateDataList(pros);
+
+
                 }
-                
 
             }
-            response.Close();
-            respStream.Close();
+            catch (IOException ex)
+            {
+
+            }
+            catch (WebException  ex)
+            {
+
+            }
+            catch (SystemException ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (response != null)
+                    response.Close();
+                if (respStream != null)
+                    respStream.Close();
+            }
         }
+        
+        
     }
 }
