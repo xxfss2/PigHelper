@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HtmlAgilityPack">
-      <HintPath>F:\MyProject\FootBallCaiji\FootBallCaiji\lib\HtmlAgilityPack.dll</HintPath>
+      <HintPath>D:\MyProject\HtmlAgilityPack\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

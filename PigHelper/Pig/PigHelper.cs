@@ -73,10 +73,12 @@ namespace PigHelper
                         doc.Load(sr);
                         HtmlNode mainTable = doc.DocumentNode.SelectNodes("//table[@class=\"list-task\"]")[0];
                         HtmlNodeCollection trs = mainTable.SelectNodes("//tr");
-                        int count = trs.Count > 40 ? 42 : trs.Count;
+                        int count = trs.Count > 40 ? 41 : trs.Count;
                         List<ProjectInfo> pros = new List<ProjectInfo>();
                         for (int i = 0; i < count; i++)
                         {
+                            if (trs[i] == null)
+                                continue;
                             if (trs[i].ChildNodes[3].InnerText == "已选标")
                                 continue;
                             var td = trs[i].ChildNodes[0];
