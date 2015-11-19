@@ -71,7 +71,9 @@ namespace PigHelper
                     {
                         HtmlDocument doc = new HtmlDocument();
                         doc.Load(sr);
-                        HtmlNode mainTable = doc.DocumentNode.SelectNodes("//table[@class=\"list-task\"]")[0];
+                        var list= doc.DocumentNode.SelectNodes("//table[@class=\"list-task\"]");
+                        if(list ==null )return ; ;
+                        HtmlNode mainTable = list[0];
                         HtmlNodeCollection trs = mainTable.SelectNodes("//tr");
                         int count = trs.Count > 40 ? 41 : trs.Count;
                         List<ProjectInfo> pros = new List<ProjectInfo>();
@@ -140,10 +142,10 @@ namespace PigHelper
             {
 
             }
-            catch (SystemException ex)
-            {
-                throw ex;
-            }
+            //catch (SystemException ex)
+            //{
+            //    throw ex;
+            //}
             finally
             {
                 if (response != null)
